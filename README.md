@@ -2,6 +2,9 @@
 
 An interactive weather dashboard that displays real-time weather data and extreme weather alerts for major cities in South Africa.
 
+<img width="1181" height="498" alt="Screenshot (2)" src="https://github.com/user-attachments/assets/c676d8c2-2f7d-4e4f-b0bb-e478411c86d7" />
+
+
 ##  Features
 
 - Interactive map showing weather conditions across South Africa
