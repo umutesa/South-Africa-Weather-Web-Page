@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South Africa Weather Coordination</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+        h1 { color: #0077b6; }
+        .weather, .alerts { margin-top: 24px; }
+        .city { font-weight: bold; }
+        .alert { color: #d90429; font-weight: bold; }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>South Africa Weather Coordination (Livestream)</h1>
+        <div class="weather">
+            <h2>Live Weather</h2>
+            <div id="weather-list">Loading...</div>
+        </div>
+        <div class="alerts">
+            <h2>Extreme Weather Alerts</h2>
+            <div id="alert-list">Loading...</div>
+        </div>
+    </div>
+    <script>
+        async function fetchWeather() {
+            const res = await fetch('http://localhost:5000/weather');
+            const data = await res.json();
+            const el = document.getElementById('weather-list');
+            el.innerHTML = data.map(w => `<div><span class="city">${w.city}</span>: ${w.temp}°C, ${w.condition}, Wind: ${w.wind} m/s <small>(${w.timestamp})</small></div>`).join('');
+        }
+        async function fetchAlerts() {
+            const res = await fetch('http://localhost:5000/alerts');
+            const data = await res.json();
+            const el = document.getElementById('alert-list');
+            if (data.length === 0) {
+                el.innerHTML = '<div>No extreme weather alerts.</div>';
+            } else {
+                el.innerHTML = data.map(a => `<div class="alert">${a.city}: ${a.alert} <small>(${a.timestamp})</small></div>`).join('');
+            }
+        }
+        function refresh() {
+            fetchWeather();
+            fetchAlerts();
+        }
+        setInterval(refresh, 10000); // Poll every 10 seconds
+        refresh();
+    </script>
+</body>
+</html>
